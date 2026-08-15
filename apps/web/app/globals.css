@@ -1,0 +1,235 @@
+@import 'tailwindcss';
+
+/*
+  Visual system: minimal, high contrast, no lines.
+
+  Separation comes from tone, never from a border, a divider, or a shadow. A card is
+  a differently-toned surface with a large radius; when two surfaces sit side by side,
+  the ground between them is the only separator. Five type sizes total.
+*/
+
+@theme {
+  /* Surfaces, ordered by tone. Contrast between them is the layout's only edge. */
+  --color-ground: #ebe7dd;
+  --color-card: #ffffff;
+  --color-invert: #14140f;
+
+  /* Ink */
+  --color-ink: #0d0d0a;
+  --color-ink-soft: #55534a;
+  --color-ink-faint: #8a877b;
+  --color-on-invert: #f4f1e8;
+  --color-on-invert-soft: #a8a496;
+
+  /* Accents */
+  --color-orange: #ff5c00;
+  --color-teal: #17a08f;
+  --color-green: #00a86b;
+  --color-pink: #ff8fa0;
+
+  /* Semantic */
+  --color-success: #00a86b;
+  --color-danger: #d93025;
+  --color-warning: #a35c00;
+
+  --font-body: var(--font-inter), 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
+
+  /* Five sizes. Everything on the page is one of these. */
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.75rem, 3vw, 2.5rem);
+  --text-hero: clamp(2.5rem, 6vw, 4.75rem);
+
+  --radius-md: 16px;
+  --radius-lg: 28px;
+  --radius-xl: 40px;
+  --radius-full: 9999px;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html[data-theme='dark'] {
+    color-scheme: dark;
+    --color-ground: #0d0d0a;
+    --color-card: #1a1a15;
+    --color-invert: #f4f1e8;
+    --color-ink: #f4f1e8;
+    --color-ink-soft: #a8a496;
+    --color-ink-faint: #6f6d63;
+    --color-on-invert: #0d0d0a;
+    --color-on-invert-soft: #55534a;
+    --color-danger: #ff6b5e;
+    --color-warning: #e0a63a;
+  }
+
+  body {
+    background-color: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    letter-spacing: -0.011em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-orange);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-orange);
+    outline-offset: 3px;
+    border-radius: var(--radius-md);
+  }
+
+  /* No rules anywhere: tone separates, lines never do. */
+  hr {
+    display: none;
+  }
+}
+
+@layer components {
+  .card {
+    background: var(--color-card);
+    border-radius: var(--radius-lg);
+  }
+
+  .card-xl {
+    background: var(--color-card);
+    border-radius: var(--radius-xl);
+  }
+
+  .card-invert {
+    background: var(--color-invert);
+    color: var(--color-on-invert);
+    border-radius: var(--radius-xl);
+  }
+
+  .lift {
+    transition: transform 220ms cubic-bezier(0.22, 0.7, 0.3, 1);
+  }
+  .lift:hover {
+    transform: translateY(-3px);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border-radius: var(--radius-full);
+    padding: 0.25rem 0.625rem;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: var(--radius-full);
+    padding: 0.75rem 1.375rem;
+    font-size: var(--text-base);
+    font-weight: 600;
+    transition:
+      background-color 180ms ease,
+      color 180ms ease,
+      opacity 180ms ease;
+  }
+
+  .btn-primary {
+    background: var(--color-orange);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    opacity: 0.88;
+  }
+
+  .btn-dark {
+    background: var(--color-invert);
+    color: var(--color-on-invert);
+  }
+  .btn-dark:hover {
+    opacity: 0.86;
+  }
+
+  .btn-plain {
+    background: transparent;
+    color: var(--color-ink-soft);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .btn-plain:hover {
+    color: var(--color-ink);
+  }
+
+  /* Display type. Tight, heavy, high contrast — the whole "tech" register. */
+  .h-hero {
+    font-size: var(--text-hero);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.038em;
+  }
+
+  .h-section {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+  }
+
+  .h-card {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .readout {
+    font-size: clamp(2.75rem, 5.5vw, 4rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .label {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-ink-faint);
+  }
+}
+
+@layer utilities {
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .rise {
+    animation: rise 520ms cubic-bezier(0.22, 0.7, 0.3, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rise,
+    .lift {
+      animation: none;
+      transition: none;
+    }
+    .lift:hover {
+      transform: none;
+    }
+  }
+}

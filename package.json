@@ -1,0 +1,27 @@
+{
+  "name": "dshplugins",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.23.0",
+  "engines": {
+    "node": ">=22.16.0"
+  },
+  "scripts": {
+    "registry:crawl": "pnpm --filter @dshplugins/registry run crawl",
+    "registry:verify": "pnpm --filter @dshplugins/registry run verify",
+    "registry:build": "pnpm --filter @dshplugins/registry run build",
+    "dev": "pnpm --filter @dshplugins/web run dev",
+    "build": "pnpm --filter @dshplugins/web run build"
+  },
+  "devDependencies": {
+    "tsx": "^4.22.4",
+    "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  }
+}

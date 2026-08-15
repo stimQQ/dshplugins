@@ -1,0 +1,9 @@
+# The layer this bundle contributes when a profile lists it.
+# The row references the package by name so Node's resolution finds the installed
+# code — a relative or absolute path here would only work on the author's machine.
+- insert:
+    - id: doctor
+      name: dsh-doctor
+      config:
+        registry: https://dshplugins.co
+        timeoutMs: 8000

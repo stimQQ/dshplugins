@@ -1,0 +1,10 @@
+# Cloudflare Pages / Netlify. The registry API is public data and must be readable
+# from any origin — the in-harness plugins that consume it run on localhost.
+/api/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, HEAD, OPTIONS
+  Cache-Control: public, max-age=300, s-maxage=3600, stale-while-revalidate=86400
+
+/data/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300, s-maxage=3600

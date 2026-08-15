@@ -1,0 +1,23 @@
+{
+  "name": "@dshplugins/registry",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Crawl, verify, and publish the DeepSeek Harness plugin registry",
+  "scripts": {
+    "crawl": "tsx src/crawl.ts",
+    "verify": "tsx src/verify.ts",
+    "build": "tsx src/build.ts",
+    "all": "pnpm run crawl && pnpm run verify && pnpm run build"
+  },
+  "dependencies": {
+    "@types/semver": "^7.8.0",
+    "semver": "^7.8.5",
+    "tar": "^7.5.7",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "tsx": "^4.22.4"
+  }
+}

@@ -1,0 +1,51 @@
+name: Refresh registry
+
+# The ecosystem adds ~240 plugins a day, so a snapshot is stale within 48 hours.
+# This runs the full pipeline daily and commits the result; the site rebuilds from it.
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Crawl, verify, build
+        env:
+          # Repository enrichment; the pipeline degrades gracefully without it.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pnpm registry:crawl
+          pnpm registry:verify
+          pnpm registry:build
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name 'registry-bot'
+          git config user.email 'registry-bot@users.noreply.github.com'
+          git add packages/registry/data
+          if git diff --cached --quiet; then
+            echo 'no change'
+            exit 0
+          fi
+          COUNT=$(node -e "console.log(require('./packages/registry/data/stats.json').totals.installable)")
+          git commit -m "data: refresh registry (${COUNT} installable plugins)"
+          git push

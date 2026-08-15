@@ -1,0 +1,51 @@
+{
+  "name": "dsh-doctor",
+  "version": "0.1.0",
+  "description": "Health check for the dsh plugins you already installed: reports which ones ship a broken package, which are pinned to a dsh version that no longer exists, and which run code on your machine at install time. 插件体检:检查已安装插件哪些打包坏了、哪些依赖版本已过期、哪些安装时会执行代码。",
+  "keywords": [
+    "dsh-plugin",
+    "dsh",
+    "deepseek-harness",
+    "doctor",
+    "health-check",
+    "diagnostics"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-tools": ">=0.1.0-rc.6"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "plugin": {
+      "schemaVersion": 1,
+      "category": "devtools",
+      "displayName": {
+        "en": "Plugin Doctor",
+        "zh-CN": "插件体检"
+      },
+      "summary": {
+        "en": "Checks the plugins you already installed against the public registry and reports what is broken, stale, or risky.",
+        "zh-CN": "拿你已装的插件去公开注册表比对，报告哪些坏了、哪些版本过期、哪些有风险。"
+      }
+    }
+  }
+}

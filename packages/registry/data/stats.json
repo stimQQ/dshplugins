@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-08-15T16:01:35.376Z",
+  "totals": {
+    "indexed": 1031,
+    "installable": 719,
+    "verified": 688,
+    "withBrowserHalf": 359,
+    "requiresBuild": 0
+  },
+  "compat": {
+    "current": 426,
+    "stale": 38,
+    "undeclared": 206,
+    "unpinned": 48
+  },
+  "byCategory": {
+    "llm-provider": 99,
+    "web-ui": 137,
+    "tools": 47,
+    "integration": 39,
+    "vision": 73,
+    "memory": 43,
+    "session": 50,
+    "search": 56,
+    "sandbox": 21,
+    "workflow": 16,
+    "devtools": 1,
+    "preset": 19,
+    "skill": 45,
+    "observability": 51,
+    "other": 22
+  },
+  "byDay": {
+    "2026-08-15": 268,
+    "2026-08-14": 388,
+    "2026-08-13": 63
+  },
+  "declaringStoreMetadata": 6
+}
