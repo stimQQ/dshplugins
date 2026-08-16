@@ -11,6 +11,7 @@
  */
 
 import { mkdir, writeFile } from 'node:fs/promises'
+import { pathToFileURL } from 'node:url'
 import { setTimeout as sleep } from 'node:timers/promises'
 import { fetchJson, mapLimit } from './lib/http.ts'
 import { DATA_DIR, RAW_FILE } from './lib/paths.ts'
@@ -138,4 +139,8 @@ async function main(): Promise<void> {
   console.log(`wrote ${RAW_FILE}`)
 }
 
-await main()
+// Only run as a program. verify.ts exports verifyOne for the pre-publish self-check,
+// and importing a module must not execute a full pipeline as a side effect.
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  await main()
+}

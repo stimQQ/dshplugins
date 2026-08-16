@@ -1,5 +1,5 @@
 /**
- * Plugin Doctor — a health check for the plugins a profile already has installed.
+ * Plugin Check — a health check for the plugins a profile already has installed.
  *
  * Every plugin marketplace answers "what could I install". None of them answers
  * "is what I installed still working", which is the question that actually decays:
@@ -13,7 +13,7 @@
  * Written as plain ESM on purpose: the published tarball is the artifact, so there is
  * no build step to forget and no `files` entry that can silently omit `lib/`.
  *
- * @module dsh-doctor
+ * @module dsh-plugin-check
  */
 
 import { readdir, readFile } from 'node:fs/promises'
@@ -21,7 +21,7 @@ import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { defineTool } from '@deepseek-ai/dsh-tools'
 
-export const name = 'dsh-doctor'
+export const name = 'dsh-plugin-check'
 export const inject = ['tools']
 
 /**
@@ -263,7 +263,7 @@ export function apply(ctx, config) {
   const timeoutMs = config?.timeoutMs ?? 8000
 
   ctx.tools.register(defineTool({
-    name: 'plugin_doctor',
+    name: 'plugin_check',
     description:
       'Check the health of the dsh plugins already installed in this machine\'s profiles. '
       + 'Reports plugins whose published package is broken (a declared patch or browser half that '

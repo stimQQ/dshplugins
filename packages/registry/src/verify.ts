@@ -10,6 +10,7 @@
  */
 
 import { readFile, writeFile } from 'node:fs/promises'
+import { pathToFileURL } from 'node:url'
 import { list } from 'tar'
 import { parse as parseYaml } from 'yaml'
 import { buildVersionIndex, checkCompat, dshDependencies, type VersionIndex } from './lib/compat.ts'
@@ -157,7 +158,14 @@ function classify(manifest: NpmManifest): PluginKind {
   return 'library'
 }
 
-async function verifyOne(pkg: RawPackage, versions: VersionIndex): Promise<VerifiedPackage> {
+/**
+ * Run every check against one package.
+ *
+ * Exported so a package can be checked before it is published: pass a local tarball
+ * path as `dist.tarball` and the same seven checks run against the file that `pnpm
+ * pack` produced, with no second implementation to drift from this one.
+ */
+export async function verifyOne(pkg: RawPackage, versions: VersionIndex): Promise<VerifiedPackage> {
   const { manifest } = pkg
   const kind = classify(manifest)
   const compat = checkCompat(manifest, versions)
@@ -183,7 +191,9 @@ async function verifyOne(pkg: RawPackage, versions: VersionIndex): Promise<Verif
 
   let contents: TarballContents
   try {
-    const tarballPath = await fetchTarballCached(tarballUrl)
+    // An absolute path is a local tarball (pre-publish self-check); anything else is
+    // an npm URL to download.
+    const tarballPath = tarballUrl.startsWith('/') ? tarballUrl : await fetchTarballCached(tarballUrl)
     contents = await readTarball(tarballPath, patchRelative)
   } catch (error) {
     return { ...pkg, kind, compat, checks, verified: false, requiresBuild: false, patchRows: [], tarball: null, error: String(error).slice(0, 200) }
@@ -350,4 +360,8 @@ async function main(): Promise<void> {
   console.log(`\nwrote ${VERIFIED_FILE}`)
 }
 
-await main()
+// Only run as a program. verify.ts exports verifyOne for the pre-publish self-check,
+// and importing a module must not execute a full pipeline as a side effect.
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  await main()
+}

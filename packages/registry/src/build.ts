@@ -6,7 +6,9 @@
  */
 
 import { execFileSync } from 'node:child_process'
+import { pathToFileURL } from 'node:url'
 import { readFile, writeFile } from 'node:fs/promises'
+import { pathToFileURL } from 'node:url'
 import { categorize, CATEGORIES } from './lib/categorize.ts'
 import { type CuratedFile, loadCurated, resolve } from './lib/curated.ts'
 import { fetchJson, mapLimit } from './lib/http.ts'
@@ -321,4 +323,8 @@ async function main(): Promise<void> {
   console.log(`wrote ${INDEX_FILE}`)
 }
 
-await main()
+// Only run as a program. verify.ts exports verifyOne for the pre-publish self-check,
+// and importing a module must not execute a full pipeline as a side effect.
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  await main()
+}
