@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -52,13 +53,10 @@ export function Header({ lang }: { lang: Lang }) {
   return (
     <header className="mx-auto flex max-w-[76rem] items-center gap-2 px-5 py-5 sm:px-8">
       <Link href={`/${lang}/`} className="flex items-center gap-2.5">
-        <span
-          className="grid size-7 place-items-center rounded-full text-sm font-bold text-white"
-          style={{ background: 'var(--color-orange)' }}
-          aria-hidden
-        >
-          ✓
-        </span>
+        {/* The mark carries its own alpha, so the belly stays negative space and
+            reads on the cream ground and the dark one alike. */}
+        <Image src="/logo-deepseek.png" alt="" width={28} height={28} className="size-7" priority />
+
         <span className="hidden text-base font-semibold tracking-tight sm:inline">{t('site.name', lang)}</span>
         <span className="text-base font-semibold tracking-tight sm:hidden">{t('site.short', lang)}</span>
       </Link>

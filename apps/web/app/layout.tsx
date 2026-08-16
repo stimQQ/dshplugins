@@ -1,7 +1,16 @@
+import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { SITE_URL } from '@/lib/seo'
 import './globals.css'
+
+/**
+ * Measurement id, read at build time — the site is a static export, so a
+ * `NEXT_PUBLIC_` value is inlined into the bundle rather than read at runtime.
+ * Absent (local builds, forks, previews without the var) the tag never ships,
+ * so development traffic cannot pollute the property.
+ */
+const GA_ID = process.env['NEXT_PUBLIC_GA_ID']
 
 /** Inter carries the whole interface; weight, not family, creates hierarchy. */
 const inter = Inter({
@@ -37,7 +46,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
+      </body>
     </html>
   )
 }

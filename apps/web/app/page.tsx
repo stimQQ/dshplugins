@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 /**
@@ -12,13 +13,7 @@ export default function Root() {
       <script dangerouslySetInnerHTML={{ __html: PICK }} />
       <div className="mx-auto flex min-h-dvh max-w-md flex-col justify-center gap-7 px-6">
         <div className="flex items-center gap-2.5">
-          <span
-            className="grid size-9 place-items-center rounded-md text-lg font-bold text-white"
-            style={{ background: 'var(--color-orange)' }}
-            aria-hidden
-          >
-            ✓
-          </span>
+          <Image src="/logo-deepseek.png" alt="" width={36} height={36} className="size-9" priority />
           <h1 className="h-card">
             DeepSeek Harness Plugins
             <span className="block text-ink-faint">DeepSeek Harness 插件</span>
